@@ -1,7 +1,23 @@
 import Head from 'next/head'
+import { predicate } from '@prismicio/client'
+import { GetStaticProps } from 'next'
+import { asText } from "@prismicio/helpers";
+
+import { getPrismicClient } from '../../services/prismic'
 import styles from './styles.module.scss'
 
-export default function Posts() {
+interface Post {
+  slug: string;
+  title: string;
+  excerpt: string;
+  updatedAt: string;
+}
+
+interface PostsProps {
+  posts: Post[]
+}
+
+export default function Posts({ posts }: PostsProps) {
   return (
     <>
       <Head>
@@ -10,23 +26,49 @@ export default function Posts() {
 
       <main className={styles.container}>
         <div className={styles.posts}>
-          <a href="">
-            <time>29 de abril de 2022</time>
-            <strong>Título do post em si</strong>
-            <p>Muitas coisas aconteciam simultaneamente no mundo durante a década de 70, principalmente na tecnologia: basta dizer que o primeiro email foi enviado em 1971, por Ray Tomlinson. O que aconteceu também foi a estreia da sketch televisa de humor, Monty Python’s Flying Circus, na BBC britânica, em 1969. Esse pequeno evento televisivo influenciou gerações, incluindo — sim — programadores.</p>
-          </a>
-          <a href="">
-            <time>29 de abril de 2022</time>
-            <strong>Título do post em si</strong>
-            <p>Muitas coisas aconteciam simultaneamente no mundo durante a década de 70, principalmente na tecnologia: basta dizer que o primeiro email foi enviado em 1971, por Ray Tomlinson. O que aconteceu também foi a estreia da sketch televisa de humor, Monty Python’s Flying Circus, na BBC britânica, em 1969. Esse pequeno evento televisivo influenciou gerações, incluindo — sim — programadores.</p>
-          </a>
-          <a href="">
-            <time>29 de abril de 2022</time>
-            <strong>Título do post em si</strong>
-            <p>Muitas coisas aconteciam simultaneamente no mundo durante a década de 70, principalmente na tecnologia: basta dizer que o primeiro email foi enviado em 1971, por Ray Tomlinson. O que aconteceu também foi a estreia da sketch televisa de humor, Monty Python’s Flying Circus, na BBC britânica, em 1969. Esse pequeno evento televisivo influenciou gerações, incluindo — sim — programadores.</p>
-          </a>
+          { posts.map(post => (
+            <a href="#" key={post.slug}>
+              <time>{post.updatedAt}</time>
+              <strong>{post.title}</strong>
+              <p>{post.excerpt}</p>
+            </a>
+          )) }
         </div>
       </main>
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient()
+
+  const response = await prismic.get({
+    predicates: predicate.at('document.type', 'post'),
+    fetch: ['post.title', 'post.content'],
+    pageSize: 100,
+  })
+
+  console.log(JSON.stringify(response, null, 2))
+  // console.log(response)
+  
+  const posts = response.results.map(post => {
+    console.log(post.data.title)
+    return {
+      slug: post.uid,
+      // title:  asText(post.data.title),  // asText não está funcionando com title
+      title: post.data.title as string,
+      excerpt: post.data.content.find(content => content.type === 'paragraph')?.text ?? '',
+      updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      })
+    }
+  })
+
+  return {
+    props: {
+      posts
+    }
+  }
 }
