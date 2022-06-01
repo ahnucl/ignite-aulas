@@ -48,11 +48,7 @@ export const getStaticProps: GetStaticProps = async () => {
     pageSize: 100,
   })
 
-  console.log(JSON.stringify(response, null, 2))
-  // console.log(response)
-  
   const posts = response.results.map(post => {
-    console.log(post.data.title)
     return {
       slug: post.uid,
       // title:  asText(post.data.title),  // asText não está funcionando com title
