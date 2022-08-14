@@ -11,6 +11,8 @@ export const HistoryContainer = styled.main`
     font-size: 1.5rem;
     color: ${(props) => props.theme['gray-100']};
   }
+
+  overflow: auto; /** Correção para scroll na tabela. Não foi feito na aula (até agora) */
 `
 
 export const HistoryList = styled.div`
