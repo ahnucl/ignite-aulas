@@ -1,5 +1,5 @@
 import {  FaGithub} from "react-icons/fa";
-import { FiX } from 'react-icons/fi'
+import { FiX } from 'react-icons/fi';
 import { signIn, signOut ,useSession } from "next-auth/react";
 
 import styles from './styles.module.scss'
