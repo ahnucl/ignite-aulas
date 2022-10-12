@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import {
   Box,
   Button,
@@ -5,6 +6,7 @@ import {
   Flex,
   Heading,
   Icon,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -14,25 +16,43 @@ import {
   Tr,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { RiAddLine, RiPencilLine } from 'react-icons/ri'
 import Link from 'next/link'
+import { RiAddLine, RiPencilLine } from 'react-icons/ri'
+import { useQuery } from 'react-query'
 
-import { useEffect } from 'react'
 import { Header } from '../../components/Header'
 import { Pagination } from '../../components/Pagination'
 import { Sidebar } from '../../components/Sidebar'
 
 export default function UserList() {
+  const { data, isLoading, error } = useQuery(
+    'users',
+    async () => {
+      const response = await fetch('http://localhost:3000/api/users')
+      const responseData = await response.json()
+
+      const users = responseData.users.map(user => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        }),
+      }))
+
+      return users
+    },
+    {
+      staleTime: 1000 * 5, // 5 seconds
+    },
+  )
+
   const isWideVersion = useBreakpointValue({
     base: false,
     md: true,
   })
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/users')
-      .then(response => response.json())
-      .then(data => console.log(data))
-  }, [])
 
   return (
     <Box>
@@ -60,50 +80,68 @@ export default function UserList() {
             </Link>
           </Flex>
 
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px={['4', '4', '6']} color="gray.300" w="8">
-                  <Checkbox colorScheme="pink" />
-                </Th>
-                <Th>Usuário</Th>
-                {isWideVersion && <Th>Data de cadastro</Th>}
-                <Th w="8" />
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td px={['4', '4', '6']}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">Leonardo Cunha</Text>
-                    <Text fontSize="sm" color="gray.300">
-                      lalmcunha@gmail.com
-                    </Text>
-                  </Box>
-                </Td>
-                {isWideVersion && <Td>04 de abril de 2021</Td>}
-                <Td>
-                  {isWideVersion && (
-                    <Button
-                      as="a"
-                      size="sm"
-                      fontSize="small"
-                      colorScheme="pink"
-                      variant="outline"
-                      leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                    >
-                      Editar
-                    </Button>
-                  )}
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
+          {isLoading ? (
+            <Flex justify="center">
+              <Spinner />
+            </Flex>
+          ) : error ? (
+            <Flex justify="center">
+              <Text>Falha ao obter dados dos usuários</Text>
+            </Flex>
+          ) : (
+            <>
+              <Table colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th px={['4', '4', '6']} color="gray.300" w="8">
+                      <Checkbox colorScheme="pink" />
+                    </Th>
+                    <Th>Usuário</Th>
+                    {isWideVersion && <Th>Data de cadastro</Th>}
+                    <Th w="8" />
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {data.map(user => {
+                    return (
+                      <Tr key={user.id}>
+                        <Td px={['4', '4', '6']}>
+                          <Checkbox colorScheme="pink" />
+                        </Td>
+                        <Td>
+                          <Box>
+                            <Text fontWeight="bold">{user.name}</Text>
+                            <Text fontSize="sm" color="gray.300">
+                              {user.email}
+                            </Text>
+                          </Box>
+                        </Td>
+                        {isWideVersion && <Td>{user.createdAt}</Td>}
+                        <Td>
+                          {isWideVersion && (
+                            <Button
+                              as="a"
+                              size="sm"
+                              fontSize="small"
+                              colorScheme="pink"
+                              variant="outline"
+                              leftIcon={
+                                <Icon as={RiPencilLine} fontSize="16" />
+                              }
+                            >
+                              Editar
+                            </Button>
+                          )}
+                        </Td>
+                      </Tr>
+                    )
+                  })}
+                </Tbody>
+              </Table>
 
-          <Pagination />
+              <Pagination />
+            </>
+          )}
         </Box>
       </Flex>
     </Box>
