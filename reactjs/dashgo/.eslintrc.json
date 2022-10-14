@@ -29,6 +29,10 @@
         "prettier"
     ],
     "rules": {
+      "camelcase": ["error", {
+        "ignoreDestructuring": true,
+        "properties": "never" 
+      }],
       "react/jsx-props-no-spreading": "off",
       "react/require-default-props": "off",
       "react-hooks/rules-of-hooks": "error",
