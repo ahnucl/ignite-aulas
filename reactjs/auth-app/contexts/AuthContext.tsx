@@ -35,6 +35,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if(token) {
       api.get('/me').then(response => {
+        console.log('response no AuthContext', response)
         const { email, permissions, roles } = response.data
 
         setUser({ email, permissions, roles })
@@ -57,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         maxAge: 60 * 60 * 24 * 30, // 30 days
         path: '/', // quais caminhos da aplicação terão acesso ao cookie
       })
-      
+
       setCookie(undefined, 'auth-app.refreshToken', refreshToken,{
         maxAge: 60 * 60 * 24 * 30, // 30 days
         path: '/', // quais caminhos da aplicação terão acesso ao cookie
