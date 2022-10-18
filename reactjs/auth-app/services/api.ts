@@ -21,8 +21,8 @@ interface ApiError {
 
 api.interceptors.response.use(response => {
   return response
-}, (error: any) => { // AxiosError<ApiError>
-  if (error.response?.status === 401) {
+}, (error: AxiosError) => { // AxiosError<ApiError>
+  if (error?.response?.status === 401) {
     if (error.response.data?.code === 'token.expired') {
       cookies = parseCookies()
 
@@ -60,13 +60,16 @@ api.interceptors.response.use(response => {
       }
 
       return new Promise((resolve, reject) => {
+        console.log('dentro da fila')
         failedRequestsQueue.push({
           onSuccess: (token: string) => {
+            console.log('Success')
             originalConfig.headers['Authorization'] = `Bearer ${token}`
-
+            
             resolve(api(originalConfig))
           },
           onFailure: (err: AxiosError) => {
+            console.log('Failure')
             reject(err)
           },
         })
