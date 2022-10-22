@@ -48,7 +48,7 @@ api.interceptors.response.use(response => {
             path: '/',
           })
 
-          api.defaults.headers['Authorization'] = `Bearer ${token}`
+          api.defaults.headers.common.Authorizarion = `Bearer ${token}`
 
           failedRequestsQueue.forEach(request => request.onSuccess(token))
           failedRequestsQueue = []
