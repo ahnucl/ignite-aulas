@@ -64,8 +64,6 @@ api.interceptors.response.use(response => {
         failedRequestsQueue.push({
           onSuccess: (token: string) => {
             originalConfig.headers!.Authorization = `Bearer ${token}` // precisei adicionar o ! para tirar erro do TS
-            console.log('Success', originalConfig)  
-            const data = api(originalConfig)
             resolve(api(originalConfig))
           },
           onFailure: (err: AxiosError) => {
