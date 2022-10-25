@@ -18,10 +18,12 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
   
   const api = axios.create({
     baseURL: 'http://localhost:3333',
-    headers: {
-      Authorization: `Bearer ${cookies['auth-app.token']}`
-    }
+    // headers: {
+    //   Authorization: `Bearer ${cookies['auth-app.token'] ?? 'meu teste'}`
+    // }
   })
+
+  api.defaults.headers.common.Authorization = `Bearer ${cookies['auth-app.token']}` // para usar com o common
 
   api.interceptors.response.use(response => {
     return response
@@ -51,7 +53,8 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
               path: '/',
             })
 
-            api.defaults.headers['Authorization'] = `Bearer ${token}`
+            api.defaults.headers.common.Authorization = `Bearer ${token}`
+            // api.defaults.headers['Authorization'] = `Bearer ${token}`
 
             failedRequestsQueue.forEach(request => request.onSuccess(token))
             failedRequestsQueue = []
@@ -67,10 +70,12 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
           })
         }
 
+        const a: string | number | boolean = 'teste'
+
         return new Promise((resolve, reject) => {
           failedRequestsQueue.push({
             onSuccess: (token: string) => {
-              originalConfig.headers['Authorization'] = `Bearer ${token}` // precisei adicionar o ! para tirar erro do TS
+              originalConfig.headers!['Authorization'] = `Bearer ${token}` // precisei adicionar o ! para tirar erro do TS
               resolve(api(originalConfig))
             },
             onFailure: (err: AxiosError) => {
