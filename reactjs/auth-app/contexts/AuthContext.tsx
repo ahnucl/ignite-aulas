@@ -1,7 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import Router from 'next/router'
-import { api } from "../services/api";
+
+import { api } from "../services/apiClient";
 
 interface User {
   email: string
@@ -22,6 +23,7 @@ interface AuthContextData {
 }
 
 export function signOut() {
+  console.log('Chamando signOut')
   destroyCookie(undefined, 'auth-app.token')
   destroyCookie(undefined, 'auth-app.refreshToken')
 
@@ -49,6 +51,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           setUser({ email, permissions, roles })
         })
         .catch(() => {
+          console.log('signOut do catch do AuthProvider: ', process.browser)
           signOut()
         })
     }
@@ -74,6 +77,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         path: '/', // quais caminhos da aplicação terão acesso ao cookie
       })
 
+      setCookie(undefined, 'auth-app.TESTE', 'Meu teste', {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: '/', // quais caminhos da aplicação terão acesso ao cookie
+      })
+
       setUser({
         email,
         permissions,
@@ -82,6 +90,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       api.defaults.headers.common.Authorization = `Bearer ${token}`
 
+      console.log('Pre push para dashboard. Token: ', token)
+      console.log('api.defaults.headers.common.Authorization', api.defaults.headers.common.Authorization)
+      console.log('FIM PRE PUSH para dashboard')
       Router.push('/dashboard')
     } catch (err) {
       console.log(err)
