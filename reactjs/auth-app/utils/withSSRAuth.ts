@@ -20,8 +20,6 @@ export function withSSRAuth<P extends {[k: string]: any}>(fn: GetServerSideProps
       return await fn(ctx)
     } catch (error) {
       if (error instanceof AuthTokenError) {
-        console.log('AuthTokenError?', error instanceof AuthTokenError)  
-        console.log(error)
     
         destroyCookie(ctx, 'auth-app.token')
         destroyCookie(ctx, 'auth-app.refreshToken')

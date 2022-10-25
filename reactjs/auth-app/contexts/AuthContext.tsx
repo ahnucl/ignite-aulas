@@ -23,7 +23,6 @@ interface AuthContextData {
 }
 
 export function signOut() {
-  console.log('Chamando signOut')
   destroyCookie(undefined, 'auth-app.token')
   destroyCookie(undefined, 'auth-app.refreshToken')
 
@@ -51,7 +50,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
           setUser({ email, permissions, roles })
         })
         .catch(() => {
-          console.log('signOut do catch do AuthProvider: ', process.browser)
           signOut()
         })
     }
@@ -88,11 +86,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         roles,
       })
 
-      api.defaults.headers.common.Authorization = `Bearer ${token}`
+      // api.defaults.headers.common.Authorization = `Bearer ${token}`
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
 
-      console.log('Pre push para dashboard. Token: ', token)
-      console.log('api.defaults.headers.common.Authorization', api.defaults.headers.common.Authorization)
-      console.log('FIM PRE PUSH para dashboard')
       Router.push('/dashboard')
     } catch (err) {
       console.log(err)

@@ -16,9 +16,6 @@ let failedRequestsQueue: any[] = []
 export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = undefined) {
   let cookies = parseCookies(ctx) // sem o contexto não funciona no lado do servidor
   
-  console.log('Tem contexto na api?', !!ctx)
-  console.log("cookies['auth-app.token'] no setupAPIClient", cookies['auth-app.token'])
-
   const api = axios.create({
     baseURL: 'http://localhost:3333',
     headers: {
@@ -30,8 +27,6 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
     return response
   }, (error: AxiosError<ApiError>) => { // AxiosError<ApiError>
     if (error.response?.status === 401) {
-
-      console.log('error do interceptor', error)
       if (error.response.data.code === 'token.expired') {
         cookies = parseCookies(ctx)
 
@@ -40,8 +35,6 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
 
         if (!isRefreshing) {
           isRefreshing = true // faz request de /refresh apenas uma vez
-
-          console.log('pre refresh')
 
           api.post('/refresh', {
             refreshToken,
@@ -58,18 +51,13 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
               path: '/',
             })
 
-            api.defaults.headers.common.Authorizarion = `Bearer ${token}`
+            api.defaults.headers['Authorization'] = `Bearer ${token}`
 
             failedRequestsQueue.forEach(request => request.onSuccess(token))
             failedRequestsQueue = []
           }).catch(err => {
             failedRequestsQueue.forEach(request => request.onFailure(err))
             failedRequestsQueue = []
-
-            console.log('api - catch')
-            console.log('process.browser',process.browser)
-            console.log('typeof window === undefined',typeof window === 'undefined')
-            console.log('error', err)
 
             if (process.browser) {
               signOut()
@@ -82,7 +70,7 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
         return new Promise((resolve, reject) => {
           failedRequestsQueue.push({
             onSuccess: (token: string) => {
-              originalConfig.headers!.Authorization = `Bearer ${token}` // precisei adicionar o ! para tirar erro do TS
+              originalConfig.headers['Authorization'] = `Bearer ${token}` // precisei adicionar o ! para tirar erro do TS
               resolve(api(originalConfig))
             },
             onFailure: (err: AxiosError) => {
@@ -92,11 +80,6 @@ export function setupAPIClient(ctx: GetServerSidePropsContext | undefined = unde
         })
       } else {
         // deslogar o usuário, pois foi algum erro de autenticação mas não por expiração do token
-        console.log('api - else')
-        console.log('process.browser',process.browser)
-        console.log('typeof window === undefined',typeof window === 'undefined')
-        
-
         if (process.browser) {
           signOut()
         } else {

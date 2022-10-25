@@ -8,8 +8,6 @@ export default function Dashboard() {
   const { user } = useContext(AuthContext)
 
   useEffect(() => {
-    console.log('Pre /me no dashboard, auth:', api.defaults.headers.common.Authorization)
-    
     api.get('/me')
       .then(response => console.log('dashboard', response))
       .catch((error) => console.log('dashboard-error', error))
@@ -23,7 +21,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   const apiClient = setupAPIClient(ctx)
   const response = await apiClient.get('/me')
   
-  // console.log('dashboard server side', response.data)
+  console.log('dashboard server side', response.data)
 
   return {
     props: {}
