@@ -35,7 +35,7 @@ export function Home() {
     },
   })
 
-  const { watch, /* reset, */ handleSubmit } = newCycleForm
+  const { watch, reset, handleSubmit } = newCycleForm
 
   const task = watch('task')
   const isSubmitDisabled = !task /** Variáveis auxiliares */
@@ -45,14 +45,14 @@ export function Home() {
    * Context API -> Permite compartilhar informações entre VÁRIOS componentes ao mesmo tempo
    */
 
-  // function handleCreateNewCycle() {
-  //   // createNewCycle()
-  //   reset()
-  // }
+  function handleCreateNewCycle(data: NewCycleFormData) {
+    createNewCycle(data)
+    reset()
+  }
 
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(createNewCycle)} action="">
+      <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
         <FormProvider {...newCycleForm}>
           <NewCycleForm />
         </FormProvider>
