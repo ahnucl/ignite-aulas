@@ -10,7 +10,6 @@ export function Countdown() {
     markCurrentCycleAsFinished,
     amountSecondsPassed,
     setSecondsPassed,
-    clearActiveCycle,
   } = useContext(CyclesContext)
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
@@ -27,7 +26,6 @@ export function Countdown() {
 
         if (secondsDifference >= totalSeconds) {
           markCurrentCycleAsFinished()
-          clearActiveCycle()
           setSecondsPassed(totalSeconds)
           clearInterval(interval)
         } else {
@@ -57,9 +55,7 @@ export function Countdown() {
 
   useEffect(() => {
     // alteração no título demora um pouco mesmo
-    if (activeCycle) {
-      document.title = `${minutes}:${seconds}`
-    }
+    document.title = activeCycle ? `${minutes}:${seconds}` : 'Ignite Timer'
   }, [activeCycle, minutes, seconds])
 
   return (
