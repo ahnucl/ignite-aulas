@@ -29,19 +29,24 @@ export function cyclesReducer(state: CyclesState, action: CycleActions) {
         draft.activeCycleId = action.payload.newCycle.id
       })
 
-    case ActionTypes.INTERRUPT_CURRENT_CYCLE:
+    case ActionTypes.INTERRUPT_CURRENT_CYCLE: {
+      const currentCycleIndex = state.cycles.findIndex(
+        (cycle) => cycle.id === state.activeCycleId,
+      )
+
+      if (currentCycleIndex < 0) {
+        return state
+      }
+
+      /**
+       *  Não pode haver outra lógica senão a de alteração do draft dentro do produce?
+       */
+
       return produce(state, (draft) => {
-        const currentCycle = draft.cycles.find(
-          (cycle) => cycle.id === draft.activeCycleId,
-        )
-
-        if (!currentCycle) {
-          return state
-        }
-
-        currentCycle.interruptDate = new Date()
+        draft.cycles[currentCycleIndex].interruptDate = new Date()
         draft.activeCycleId = null
       })
+    }
 
     case ActionTypes.MARK_CURRENT_CYCLE_AS_FINISHED:
       return {
