@@ -1,3 +1,4 @@
+import { differenceInSeconds } from 'date-fns'
 import {
   createContext,
   ReactNode,
@@ -53,38 +54,47 @@ export function CyclesContextProvider({
 
         /**
          * Deve ter um jeito melhor de fazer isso
+         * - Deixei como está na aula e mudei a tipagem das datas no Cycle para Date | string
          */
 
-        const cyclesWithDates = parsedState.cycles.map((cycle: Cycle) => ({
-          ...cycle,
-          startDate: new Date(cycle.startDate),
-          interruptDate: cycle.interruptDate
-            ? new Date(cycle.interruptDate)
-            : undefined,
-          endDate: cycle.endDate ? new Date(cycle.endDate) : undefined,
-        })) as Cycle[]
+        // const cyclesWithDates = parsedState.cycles.map((cycle: Cycle) => ({
+        //   ...cycle,
+        //   startDate: new Date(cycle.startDate),
+        //   interruptDate: cycle.interruptDate
+        //     ? new Date(cycle.interruptDate)
+        //     : undefined,
+        //   endDate: cycle.endDate ? new Date(cycle.endDate) : undefined,
+        // })) as Cycle[]
 
-        return {
-          ...parsedState,
-          cycles: cyclesWithDates,
-        }
+        // return {
+        //   ...parsedState,
+        //   cycles: cyclesWithDates,
+        // }
+
+        return parsedState // retorno da aula
       }
 
       return initialState
     },
   )
 
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+  const { cycles, activeCycleId } = cyclesState
+
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
+    if (activeCycle) {
+      return differenceInSeconds(new Date(), new Date(activeCycle.startDate))
+    }
+
+    return 0
+  })
 
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState)
 
     localStorage.setItem('@ignite-timer:cycles-state-#-1.0.0', stateJSON)
   }, [cyclesState])
-
-  const { cycles, activeCycleId } = cyclesState
-
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
