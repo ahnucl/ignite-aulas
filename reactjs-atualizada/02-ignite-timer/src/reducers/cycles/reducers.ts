@@ -1,3 +1,5 @@
+import { produce } from 'immer'
+
 import { ActionTypes, CycleActions } from './actions'
 
 export interface Cycle {
@@ -28,17 +30,18 @@ export function cyclesReducer(state: CyclesState, action: CycleActions) {
       })
 
     case ActionTypes.INTERRUPT_CURRENT_CYCLE:
-      return {
-        ...state,
-        cycles: state.cycles.map((cycle) => {
-          if (cycle.id === state.activeCycleId) {
-            return { ...cycle, interruptDate: new Date() }
-          } else {
-            return cycle
-          }
-        }),
-        activeCycleId: null,
-      }
+      return produce(state, (draft) => {
+        const currentCycle = draft.cycles.find(
+          (cycle) => cycle.id === draft.activeCycleId,
+        )
+
+        if (!currentCycle) {
+          return state
+        }
+
+        currentCycle.interruptDate = new Date()
+        draft.activeCycleId = null
+      })
 
     case ActionTypes.MARK_CURRENT_CYCLE_AS_FINISHED:
       return {
