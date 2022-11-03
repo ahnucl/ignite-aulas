@@ -1,6 +1,11 @@
-import { createContext, ReactNode, useReducer, useState } from 'react'
 import {
-  ActionTypes,
+  createContext,
+  ReactNode,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
+import {
   addNewCycleAction,
   interruptCurrentCycleAction,
   markCurrentCycleAsFinishedAction,
@@ -32,12 +37,50 @@ interface CyclesContextProviderProps {
 export function CyclesContextProvider({
   children,
 }: CyclesContextProviderProps) {
-  const [cyclesState, dispatchCycles] = useReducer(cyclesReducer, {
-    cycles: [],
-    activeCycleId: null,
-  })
+  const [cyclesState, dispatchCycles] = useReducer(
+    cyclesReducer,
+    {
+      cycles: [],
+      activeCycleId: null,
+    },
+    (initialState) => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@ignite-timer:cycles-state-#-1.0.0',
+      )
+
+      if (storedStateAsJSON) {
+        const parsedState = JSON.parse(storedStateAsJSON)
+
+        /**
+         * Deve ter um jeito melhor de fazer isso
+         */
+
+        const cyclesWithDates = parsedState.cycles.map((cycle: Cycle) => ({
+          ...cycle,
+          startDate: new Date(cycle.startDate),
+          interruptDate: cycle.interruptDate
+            ? new Date(cycle.interruptDate)
+            : undefined,
+          endDate: cycle.endDate ? new Date(cycle.endDate) : undefined,
+        })) as Cycle[]
+
+        return {
+          ...parsedState,
+          cycles: cyclesWithDates,
+        }
+      }
+
+      return initialState
+    },
+  )
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cyclesState)
+
+    localStorage.setItem('@ignite-timer:cycles-state-#-1.0.0', stateJSON)
+  }, [cyclesState])
 
   const { cycles, activeCycleId } = cyclesState
 
