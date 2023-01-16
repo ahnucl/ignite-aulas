@@ -11,7 +11,7 @@ export const routes = [
     handler: (req, res) => {
       const { search } = req.query
 
-      const users = database.select('users', {
+      const users = database.select('users', search && {
         name: search,
         email: search,
       })
