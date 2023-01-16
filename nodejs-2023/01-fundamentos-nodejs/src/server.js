@@ -1,6 +1,7 @@
 import http from "node:http" // importação de módulos nativos do node (convenção)
 import { json } from "./middlewares/json.js" // type=module no node precisa da extensão
 import { routes } from "./routes.js"
+import { extractQueryParams } from "./utils/extract-query-params.js"
 
 // CommonJS => require - Pouco usado
 // ESModules => import/export - Node por padrão não suporta - adicionar type ao package.json
@@ -42,7 +43,13 @@ const server = http.createServer(async (req, res) => {
   if (route) {
     const routeParams = req.url.match(route.path)
 
-    req.params = { ...routeParams.groups }
+    // console.log(extractQueryParams(routeParams.groups.query))
+
+    const { query, ...params } = routeParams.groups
+
+    req.params = params
+    req.query = query ? extractQueryParams(query) : {}
+
 
     return route.handler(req, res)
   }
