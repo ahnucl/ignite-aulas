@@ -1,7 +1,6 @@
 import http from "node:http" // importação de módulos nativos do node (convenção)
-import { randomUUID } from "node:crypto";
-import { Database } from "./database.js"
 import { json } from "./middlewares/json.js" // type=module no node precisa da extensão
+import { routes } from "./routes.js"
 
 // CommonJS => require - Pouco usado
 // ESModules => import/export - Node por padrão não suporta - adicionar type ao package.json
@@ -19,7 +18,16 @@ import { json } from "./middlewares/json.js" // type=module no node precisa da e
 
 // Cabeçalhos (Requisição/Resposta) => Metadados - informações adicionais não relacionadas ao conteúdo da resposta, que ajudam os envlvidos a interpretar a requisição
 
-const database = new Database()
+// Query Parameters  
+//  - URL Statefull\
+//  - parâmetros nomeados
+//  - /users?userID=1&name=Leonardo
+//  - informações não sensíveis que modificam a resposta do backend
+//  - filtros, paginação, não-obrigatório
+// Route Parameters
+//  - Identificação de recurso
+// Request Body
+//  - Envio de informações de um formulário normalmente (HTTPs)
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req
@@ -27,24 +35,12 @@ const server = http.createServer(async (req, res) => {
 
   await json(req, res)
 
-  if (method === 'GET' && url === '/users') {
-    const users = database.select('users')
-    return res
-      .end(JSON.stringify(users))
-  }
-  
-  if (method === 'POST' && url === '/users') {
-    const { name, email } = req.body
-    
-    const user = {
-      id: randomUUID(),
-      name,
-      email,
-    }
+  const route = routes.find(route => {
+    return route.method === method && route.path === url
+  })
 
-    database.insert('users', user)
-    
-    return res.writeHead(201).end()
+  if (route) {
+    return route.handler(req, res)
   }
   
   return res.writeHead(404).end()
