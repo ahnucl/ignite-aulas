@@ -1,4 +1,5 @@
-import http from "node:http"; // importação de módulos nativos do node (convenção)
+import http from "node:http" // importação de módulos nativos do node (convenção)
+import { json } from "./middlewares/json.js" // type=module no node precisa da extensão
 
 // CommonJS => require - Pouco usado
 // ESModules => import/export - Node por padrão não suporta - adicionar type ao package.json
@@ -20,23 +21,12 @@ const users = [] // Stateful
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req
-  // console.log(method, url)
-  console.log(req)
-  const buffers = []
+  console.log(method, url)
 
-  for await (const chunk of req) {
-    buffers.push(chunk)
-  }
-
-  try {
-    req.body = JSON.parse(Buffer.concat(buffers).toString())
-  } catch {
-    req.body = null
-  }
+  await json(req, res)
 
   if (method === 'GET' && url === '/users') {
     return res
-      .setHeader('Content-type', 'application/json')
       .end(JSON.stringify(users))
   }
   
