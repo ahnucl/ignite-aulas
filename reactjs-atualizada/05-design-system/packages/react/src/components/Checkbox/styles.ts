@@ -10,6 +10,7 @@ export const CheckboxContainer = styled(Checkbox.Root, {
   lineHeight: 0,
   cursor: 'pointer',
   overflow: 'hidden',
+  boxSizing: 'border-box',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
