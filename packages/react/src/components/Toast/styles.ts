@@ -53,7 +53,7 @@ export const ToastBody = styled(Toast.Root, {
   },
 
   '&[data-state="closed"]': {
-    animation: `${hide} 300ms ease-in`,
+    animation: `${hide} 200ms ease-in`, // Tempo que deve estar no onOpenChange
   },
 
   '&[data-swipe="move"]': {

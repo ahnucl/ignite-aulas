@@ -37,8 +37,6 @@ export default {
       const [totalMessages, setTotalMessages] = useState(0)
       const [messages, setMessages] = useState<ToastMessage[]>([])
 
-      console.log(messages)
-
       return (
         <ToastProvider>
           <Button
@@ -66,14 +64,14 @@ export default {
                 title: message.title,
                 description: message.description,
 
-                onOpenChange: (e) => {
-                  console.log(e)
-
-                  setMessages((state) =>
-                    state.filter(
-                      (stateMessage) => stateMessage.id !== message.id,
-                    ),
-                  )
+                onOpenChange: () => {
+                  setTimeout(() => {
+                    setMessages((state) =>
+                      state.filter(
+                        (stateMessage) => stateMessage.id !== message.id,
+                      ),
+                    )
+                  }, 200) // Mesmo tempo da animação. TODO: Juntar isso no componente
                 },
               },
             }),
