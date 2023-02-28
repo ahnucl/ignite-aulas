@@ -9,7 +9,7 @@ export function Checkbox(props: CheckboxProps) {
   return (
     <CheckboxContainer {...props}>
       <CheckboxIndicator asChild>
-        <Check width="bold" />
+        <Check weight="bold" />
       </CheckboxIndicator>
     </CheckboxContainer>
   )
