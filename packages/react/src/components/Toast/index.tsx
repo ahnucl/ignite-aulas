@@ -3,31 +3,28 @@ import { X } from 'phosphor-react'
 
 import {
   ToastClose,
-  ToastContainer,
+  ToastBody,
   ToastDescription,
   ToastTitle,
   ToastProvider as RadixToastProvider,
   ToastViewport,
 } from './styles'
 
-// export interface ToastProps extends ComponentProps<typeof ToastContainer> {} // Não preciso mexer nas propriedades do radix
-export interface ToastProps {
+export interface ToastProps extends ComponentProps<typeof ToastBody> {
+  id: string
   title: string
   description: string
 }
 
-export function Toast(props: ToastProps) {
+export function Toast({ id, description, title, ...props }: ToastProps) {
   return (
-    <ToastContainer
-      onOpenChange={(open) => console.log('fechou: ', open)}
-      {...props}
-    >
-      <ToastTitle>Agendamento realizado</ToastTitle>
-      <ToastDescription>Terça-feira, 28 de fevereiro às 08h</ToastDescription>
+    <ToastBody {...props}>
+      <ToastTitle>{title}</ToastTitle>
+      <ToastDescription>{description}</ToastDescription>
       <ToastClose asChild>
         <X weight="bold" />
       </ToastClose>
-    </ToastContainer>
+    </ToastBody>
   )
 }
 

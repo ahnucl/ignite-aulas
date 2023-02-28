@@ -3,7 +3,7 @@ import { keyframes, styled } from '../../styles'
 
 const slideIn = keyframes({
   from: {
-    transform: 'translateX(calc(100% + $8))',
+    transform: 'translateX(calc(100% + 32px))', // Como usar variáveis aqui dentro? 32px = $8
   },
   to: {
     transform: 'translateX(0)',
@@ -28,7 +28,7 @@ const swipeOut = keyframes({
   },
 })
 
-export const ToastContainer = styled(Toast.Root, {
+export const ToastBody = styled(Toast.Root, {
   width: '360px',
   minHeight: '82px',
   boxSizing: 'border-box',
@@ -49,11 +49,11 @@ export const ToastContainer = styled(Toast.Root, {
   },
 
   '&[data-state="open"]': {
-    animation: `${slideIn} 200ms`,
+    animation: `${slideIn} 300ms`,
   },
 
   '&[data-state="closed"]': {
-    animation: `${hide} 100ms ease-in`,
+    animation: `${hide} 300ms ease-in`,
   },
 
   '&[data-swipe="move"]': {
