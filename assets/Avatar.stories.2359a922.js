@@ -1,0 +1,2 @@
+import{A as t}from"./index.37487aec.js";import"./index.6bd7fab9.js";import"./iframe.d7f6dd98.js";import"./index.9a3aed90.js";import"./jsx-runtime.8aeecc36.js";const c={title:"Data display/Avatar",component:t,args:{src:"https://github.com/ahnucl.png",alt:"Leonardo Cunha"},argTypes:{src:{control:{type:"text"}}}},p={},n={args:{src:void 0}},e=["Primary","WithFallback"];export{p as Primary,n as WithFallback,e as __namedExportsOrder,c as default};
+//# sourceMappingURL=Avatar.stories.2359a922.js.map

@@ -1,0 +1,2 @@
+import{f as o,T as t,$ as s,B as a}from"./index.37487aec.js";import{j as r}from"./jsx-runtime.8aeecc36.js";import"./index.6bd7fab9.js";import"./iframe.d7f6dd98.js";import"./index.9a3aed90.js";const n={title:"Overlay/Tooltip",component:o,args:{children:r(t,{size:"sm",children:"Accept terms of use"}),label:"Lorem ipsum"},decorators:[e=>r(s,{children:r(a,{as:"label",css:{display:"flex",flexDirection:"row",gap:"$2"},children:e()})})]},d={},x=["Primary"];export{d as Primary,x as __namedExportsOrder,n as default};
+//# sourceMappingURL=Tooltip.stories.a1422d01.js.map
