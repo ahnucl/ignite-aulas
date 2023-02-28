@@ -1,5 +1,11 @@
 # @leonardo-ignite-ui/react
 
+## 1.3.0
+
+### Minor Changes
+
+- Create Toast component
+
 ## 1.2.0
 
 ### Minor Changes
