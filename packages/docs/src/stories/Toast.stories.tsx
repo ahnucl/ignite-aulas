@@ -65,13 +65,11 @@ export default {
                 description: message.description,
 
                 onOpenChange: () => {
-                  setTimeout(() => {
-                    setMessages((state) =>
-                      state.filter(
-                        (stateMessage) => stateMessage.id !== message.id,
-                      ),
-                    )
-                  }, 200) // Mesmo tempo da animação. TODO: Juntar isso no componente
+                  setMessages((state) =>
+                    state.filter(
+                      (stateMessage) => stateMessage.id !== message.id,
+                    ),
+                  )
                 },
               },
             }),

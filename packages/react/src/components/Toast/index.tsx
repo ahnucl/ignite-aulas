@@ -16,9 +16,21 @@ export interface ToastProps extends ComponentProps<typeof ToastBody> {
   description: string
 }
 
-export function Toast({ id, description, title, ...props }: ToastProps) {
+export function Toast({
+  id,
+  description,
+  title,
+  onOpenChange,
+  ...props
+}: ToastProps) {
+  const timedOnOpenChange = onOpenChange
+    ? (open: boolean) => {
+        setTimeout(() => onOpenChange(open), 200)
+      }
+    : undefined
+
   return (
-    <ToastBody {...props}>
+    <ToastBody onOpenChange={timedOnOpenChange} {...props}>
       <ToastTitle>{title}</ToastTitle>
       <ToastDescription>{description}</ToastDescription>
       <ToastClose asChild>
