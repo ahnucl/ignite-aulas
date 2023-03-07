@@ -1,27 +1,12 @@
 import { Button, Heading, MultiStep, Text } from '@ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+// import { api } from '../../../lib/axios'
+// import { z } from 'zod'
 import { Container, Header } from '../styles'
-
-const registerFormSchema = z.object({
-  username: z
-    .string()
-    .min(3, { message: 'O usuário precisa ter pelo menos 3 letras.' })
-    .regex(/^([a-z\\-]+)$/is, {
-      message: 'O usuário pode ter apenas letras e hífens',
-    })
-    .transform((username) => username.toLowerCase()),
-  name: z
-    .string()
-    .min(3, { message: 'O nome precisa ter pelo menos 3 letras.' }),
-})
-
-type RegisterFormData = z.infer<typeof registerFormSchema>
+import { ConnectBox, ConnectItem } from './styles'
 
 export default function Register() {
-  async function handleRegister(data: RegisterFormData) {}
+  // async function handleRegister(data: RegisterFormData) {}
 
   return (
     <Container>
@@ -32,13 +17,24 @@ export default function Register() {
           editar essas informações depois.
         </Text>
 
-        <MultiStep size={4} currentStep={1}></MultiStep>
+        <MultiStep size={4} currentStep={2}></MultiStep>
       </Header>
 
-      <Button type="submit" disabled={isSubmitting}>
-        Próximo passo
-        <ArrowRight />
-      </Button>
+      <ConnectBox>
+        <ConnectItem>
+          <Text>Google Calendar</Text>
+
+          <Button variant="secondary">
+            Conectar
+            <ArrowRight />
+          </Button>
+        </ConnectItem>
+
+        <Button type="submit">
+          Próximo passo
+          <ArrowRight />
+        </Button>
+      </ConnectBox>
     </Container>
   )
 }
