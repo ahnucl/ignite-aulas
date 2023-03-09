@@ -9,19 +9,17 @@ import {
   Text,
   TextInput,
 } from '@ignite-ui/react'
-import { signIn, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { ArrowRight, Check } from 'phosphor-react'
+import { ArrowRight } from 'phosphor-react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Container, Header } from '../styles'
 import {
+  FormError,
   IntervalBox,
+  IntervalContainer,
   IntervalDay,
   IntervalInputs,
   IntervalItem,
-  IntervalContainer,
-  FormError,
 } from './styles'
 
 const timeIntervalFormSchema = z.object({
