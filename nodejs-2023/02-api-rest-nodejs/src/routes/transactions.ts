@@ -3,6 +3,8 @@ import { randomUUID } from 'node:crypto'
 import { knex } from '../database'
 import { z } from 'zod'
 
+// Cookies - maiores fundamentos da programação Web
+
 export async function transactionsRoutes(app: FastifyInstance) {
   app.get('/', async () => {
     const transactions = await knex('transactions').select()
@@ -32,8 +34,6 @@ export async function transactionsRoutes(app: FastifyInstance) {
   })
 
   app.post('/', async (request, reply) => {
-    // { title, amount, type: 'credito' | 'debito'}
-
     const createTransactionBodySchema = z.object({
       title: z.string(),
       amount: z.number(),
@@ -44,13 +44,25 @@ export async function transactionsRoutes(app: FastifyInstance) {
       request.body,
     )
 
+    let sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      sessionId = randomUUID()
+
+      reply.cookie('sessionId', sessionId, {
+        path: '/',
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      })
+    }
+
     await knex('transactions').insert({
       id: randomUUID(),
       title,
       amount: type === 'credit' ? amount : amount * -1,
+      session_id: sessionId,
     })
 
-    // Rotas de API - não fazer retornos
+    // Rotas de API - não fazer retornos em criação, deleção - lembrar o nome disso
     return reply.status(201).send()
   })
 }
