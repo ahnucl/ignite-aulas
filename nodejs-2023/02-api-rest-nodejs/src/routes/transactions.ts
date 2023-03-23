@@ -7,6 +7,10 @@ import { checkSessionIdExists } from '../middlewares/check-session-id-exists'
 // Cookies - maiores fundamentos da programação Web
 
 export async function transactionsRoutes(app: FastifyInstance) {
+  app.addHook('preHandler', async (request, reply) => {
+    console.log(`[${request.method}] ${request.url}`)
+  }) // Para todas as rotas criar no contexto global
+
   app.get(
     '/',
     {
