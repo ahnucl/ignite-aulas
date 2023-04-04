@@ -4,6 +4,8 @@
   "description": "GymPass style app. (Checkin App)",
   "main": "index.js",
   "scripts": {
+    "env:start": "docker compose up -d",
+    "env:stop": "docker compose stop",
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src --out-dir build"
