@@ -2,6 +2,7 @@ import { CheckIn, Prisma } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { CheckInsRepository } from '../check-ins-repository'
 import dayjs from 'dayjs'
+import { MAX_ITEMS_PER_PAGE } from '@/utils/constants'
 
 export class InMemoryCheckInsRepository implements CheckInsRepository {
   public items: CheckIn[] = []
@@ -27,8 +28,6 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
   }
 
   async findManyByUserId(userId: string, page: number) {
-    const MAX_ITEMS_PER_PAGE = 20
-
     return this.items
       .filter((item) => item.user_id === userId)
       .slice((page - 1) * MAX_ITEMS_PER_PAGE, MAX_ITEMS_PER_PAGE * page)
