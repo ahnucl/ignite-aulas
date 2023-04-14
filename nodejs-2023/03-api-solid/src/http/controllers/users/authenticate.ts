@@ -31,12 +31,13 @@ export async function authenticate(
       },
     )
 
+    // Se na segunda criação de token não for passad o sub ele pega o da primeira
     const refreshToken = await reply.jwtSign(
       {},
       {
         sign: {
           sub: user.id,
-          expiresIn: '7d ',
+          expiresIn: '7d',
         },
       },
     )
