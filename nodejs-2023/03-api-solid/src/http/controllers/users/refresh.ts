@@ -21,8 +21,6 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
       },
     },
   )
-  console.log('token', token)
-  console.log('refreshToken', refreshToken)
 
   return reply
     .setCookie('refreshToken', refreshToken, {
