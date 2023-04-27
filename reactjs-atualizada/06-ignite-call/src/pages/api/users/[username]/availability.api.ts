@@ -32,7 +32,7 @@ export default async function handle(
   const isPastDate = referenceDate.endOf('date').isBefore(new Date()) // API não pode depender de validações feitas no front
 
   if (isPastDate) {
-    return res.json({ availability: [] })
+    return res.json({ possibleTimes: [], availableTimes: [] })
   }
 
   // Cruzamento de dados entre Time Interval e Schedulings
@@ -44,7 +44,7 @@ export default async function handle(
   })
 
   if (!userAvailability) {
-    return res.json({ availability: [] })
+    return res.json({ possibleTimes: [], availableTimes: [] })
   }
 
   const { time_start_in_minutes, time_end_in_minutes } = userAvailability
