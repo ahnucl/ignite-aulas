@@ -1,7 +1,6 @@
 import { Answer } from './../entities/answer';
 import { AnswersRepository } from './../repositories/answers-repository';
 import { AnswerQuestionUseCase } from './answer-question';
-import { expect, test } from "vitest";
 
 const fakeAnswersRepository: AnswersRepository = {
   create: async (answer: Answer) => {

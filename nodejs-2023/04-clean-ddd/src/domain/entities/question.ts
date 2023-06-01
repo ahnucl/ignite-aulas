@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
-import { UniqueEntityID } from './../../core/entities/value-objects/unique-entity-id';
-import { Entity } from '../../core/entities/entity';
+import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id';
+import { Entity } from '@/core/entities/entity';
 import { Slug } from './value-objects/slug';
-import { Optional } from "../../core/types/optional";
+import { Optional } from "@/core/types/optional";
 
 interface QuestionProps {
   authorId: UniqueEntityID
