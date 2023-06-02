@@ -1,14 +1,14 @@
 import dayjs from 'dayjs'
-import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id';
-import { Entity } from '@/core/entities/entity';
-import { Slug } from './value-objects/slug';
-import { Optional } from "@/core/types/optional";
+import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id'
+import { Entity } from '@/core/entities/entity'
+import { Slug } from './value-objects/slug'
+import { Optional } from '@/core/types/optional'
 
 interface QuestionProps {
   authorId: UniqueEntityID
   bestAnswerId?: UniqueEntityID
   title: string
-  content:string
+  content: string
   slug: Slug
   createdAt: Date
   updatedAt?: Date
@@ -18,11 +18,11 @@ export class Question extends Entity<QuestionProps> {
   get authorId() {
     return this.props.authorId
   }
-  
+
   get bestAnswerId() {
     return this.props.bestAnswerId
   }
-  
+
   get title() {
     return this.props.title
   }
@@ -48,13 +48,11 @@ export class Question extends Entity<QuestionProps> {
   }
 
   get excerpt() {
-    return this.content
-      .substring(0, 120)
-      .trimEnd()
-      .concat('...')
+    return this.content.substring(0, 120).trimEnd().concat('...')
   }
 
-  private touch() { // método privado! Deve ser usado em outros métodos que mudam informações
+  private touch() {
+    // método privado! Deve ser usado em outros métodos que mudam informações
     this.props.updatedAt = new Date()
   }
 
@@ -74,12 +72,18 @@ export class Question extends Entity<QuestionProps> {
     this.touch()
   }
 
-  static create(props: Optional<QuestionProps, 'createdAt' | 'slug'>, id?: UniqueEntityID) {
-    const question = new Question({
-      ...props,
-      slug: props.slug ?? Slug.createFromText(props.title),
-      createdAt: new Date()
-    }, id)
+  static create(
+    props: Optional<QuestionProps, 'createdAt' | 'slug'>,
+    id?: UniqueEntityID,
+  ) {
+    const question = new Question(
+      {
+        ...props,
+        slug: props.slug ?? Slug.createFromText(props.title),
+        createdAt: new Date(),
+      },
+      id,
+    )
 
     return question
   }

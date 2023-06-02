@@ -1,6 +1,6 @@
-import { Optional } from '@/core/types/optional';
-import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id';
-import { Entity } from '@/core/entities/entity';
+import { Optional } from '@/core/types/optional'
+import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id'
+import { Entity } from '@/core/entities/entity'
 
 interface AnswerProps {
   authorId: UniqueEntityID
@@ -8,18 +8,17 @@ interface AnswerProps {
   content: string
   createdAt: Date
   updatedAt?: Date
-
 }
 
-export class Answer extends Entity<AnswerProps> { 
+export class Answer extends Entity<AnswerProps> {
   get authorId() {
     return this.props.authorId
   }
-  
+
   get questionId() {
     return this.props.questionId
   }
-  
+
   get content() {
     return this.props.content
   }
@@ -27,18 +26,17 @@ export class Answer extends Entity<AnswerProps> {
   get createdAt() {
     return this.props.createdAt
   }
+
   get updatedAt() {
     return this.props.updatedAt
   }
 
   get excerpt() {
-    return this.content
-      .substring(0, 120)
-      .trimEnd()
-      .concat('...')
+    return this.content.substring(0, 120).trimEnd().concat('...')
   }
 
-  private touch() { // método privado! Deve ser usado em outros métodos que mudam informações
+  private touch() {
+    // método privado! Deve ser usado em outros métodos que mudam informações
     this.props.updatedAt = new Date()
   }
 
@@ -47,11 +45,17 @@ export class Answer extends Entity<AnswerProps> {
     this.touch()
   }
 
-  static create(props: Optional<AnswerProps, 'createdAt'>, id?: UniqueEntityID) {
-    const answer = new Answer({
-      ...props,
-      createdAt: new Date()
-    }, id)
+  static create(
+    props: Optional<AnswerProps, 'createdAt'>,
+    id?: UniqueEntityID,
+  ) {
+    const answer = new Answer(
+      {
+        ...props,
+        createdAt: new Date(),
+      },
+      id,
+    )
 
     return answer
   }
