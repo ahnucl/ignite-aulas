@@ -1,3 +1,4 @@
+import { QuestionAttachmentList } from './../../enterprise/entities/question-attachment-list'
 import { QuestionAttachment } from './../../enterprise/entities/question-attachment'
 import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id'
@@ -40,7 +41,7 @@ export class CreateQuestionUseCase {
       })
     })
 
-    question.attachments = questionAttachments // Usando setter
+    question.attachments = new QuestionAttachmentList(questionAttachments) // Usando setter
 
     await this.questionsRepository.create(question)
 
