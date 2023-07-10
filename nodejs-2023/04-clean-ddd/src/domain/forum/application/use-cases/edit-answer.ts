@@ -1,11 +1,11 @@
-import { UniqueEntityID } from './../../../../core/entities/value-objects/unique-entity-id'
-import { AnswerAttachmentsRepository } from './../repositories/answer-attachments-repository'
-import { AnswerAttachmentList } from './../../enterprise/entities/answer-attachment-list'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id'
+import { AnswerAttachmentsRepository } from '../repositories/answer-attachments-repository'
+import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { Either, left, right } from '@/core/either'
 import { Answer } from '../../enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
-import { NotAllowedError } from './errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
 
 interface EditAnswerUseCaseRequest {

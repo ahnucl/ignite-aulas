@@ -1,4 +1,4 @@
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id'
 import { QuestionComment } from '../../enterprise/entities/question-comment'
 import { QuestionsRepository } from '../repositories/questions-repository'
