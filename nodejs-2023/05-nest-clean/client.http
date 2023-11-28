@@ -1,0 +1,25 @@
+#VS Code's REST Client
+# Separar requisições: usar 3 cerquilhas (###)
+
+@baseUrl = http://localhost:3333
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Leonardo Cunha",
+  "email": "leonardo.cunha@gmail.com",
+  "password": "123456"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "leonardo.cunha@gmail.com",
+  "password": "123456"
+}
