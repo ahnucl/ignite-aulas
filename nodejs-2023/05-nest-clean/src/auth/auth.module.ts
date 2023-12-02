@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { Env } from 'src/env'
+import { JwtStrategy } from './jwt.strategy'
 
 /**
  * Algoritmo RS256 - chave privada e chave publica
@@ -29,5 +30,6 @@ import { Env } from 'src/env'
       },
     }),
   ],
+  providers: [JwtStrategy],
 })
 export class AuthModule {}
