@@ -10,7 +10,7 @@ Content-Type: application/json
 
 {
   "name": "Leonardo Cunha",
-  "email": "leonardo.cunha@gmail.com",
+  "email": "leonardo.cunha4@gmail.com",
   "password": "123456"
 }
 
@@ -21,7 +21,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "leonardo.cunha@gmail.com",
+  "email": "leonardo.cunha4@gmail.com",
   "password": "123456"
 }
 
@@ -31,3 +31,8 @@ Content-Type: application/json
 POST {{baseUrl}}/questions
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+{
+  "title": "Nova pergunta",
+  "content": "Novo conteúdo"
+}
