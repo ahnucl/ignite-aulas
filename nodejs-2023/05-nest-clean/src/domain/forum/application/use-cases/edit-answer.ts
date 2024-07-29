@@ -7,6 +7,7 @@ import { Answer } from '../../enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
+import { Injectable } from '@nestjs/common'
 
 interface EditAnswerUseCaseRequest {
   authorId: string
@@ -22,6 +23,7 @@ type EditAnswerUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class EditAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
