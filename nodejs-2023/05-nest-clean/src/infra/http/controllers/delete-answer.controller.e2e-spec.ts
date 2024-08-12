@@ -9,7 +9,7 @@ import { AnswerFactory } from 'test/factories/make-answer'
 import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 
-describe('Delete question (E2E)', () => {
+describe('Delete answer (E2E)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
@@ -34,7 +34,7 @@ describe('Delete question (E2E)', () => {
     await app.init()
   })
 
-  test('[DELETE] /answer/:id', async () => {
+  test('[DELETE] /answers/:id', async () => {
     const user = await studentFactory.makePrismaStudent()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
@@ -51,7 +51,7 @@ describe('Delete question (E2E)', () => {
     const answerId = answer.id.toString()
 
     const response = await request(app.getHttpServer())
-      .delete(`/answer/${answerId}`)
+      .delete(`/answers/${answerId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 

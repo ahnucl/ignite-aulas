@@ -9,7 +9,7 @@ import {
   Param,
 } from '@nestjs/common'
 
-@Controller('/answer/:id')
+@Controller('/answers/:id')
 export class DeleteAnswerController {
   constructor(private deleteAnswer: DeleteAnswerUseCase) {}
 
