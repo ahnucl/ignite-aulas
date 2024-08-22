@@ -1,4 +1,4 @@
-import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { Either, left, right } from '@/core/either'

@@ -2,7 +2,7 @@
  * Mappers são classes responsáveis por converter uma entidade de um formato de uma camada para formato de outra camada
  */
 
-import { UniqueEntityID } from '@/core/entities/value-objects/unique-entity-id'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Student } from '@/domain/forum/enterprise/entities/student'
 import { Prisma, User as PrismaUser } from '@prisma/client'
 
