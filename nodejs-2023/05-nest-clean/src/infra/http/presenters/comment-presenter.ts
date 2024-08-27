@@ -1,7 +1,10 @@
+import { AnswerCommentProps } from '@/domain/forum/enterprise/entities/answer-comment'
 import { Comment } from '@/domain/forum/enterprise/entities/comment'
+import { QuestionCommentProps } from '@/domain/forum/enterprise/entities/question-comment'
 
 export class CommentPresenter {
-  static toHTTP(comment: Comment<any>) {
+  // static toHTTP(comment: QuestionComment | AnswerComment) { // Alternativa
+  static toHTTP(comment: Comment<QuestionCommentProps | AnswerCommentProps>) {
     return {
       id: comment.id.toString(),
       content: comment.content,

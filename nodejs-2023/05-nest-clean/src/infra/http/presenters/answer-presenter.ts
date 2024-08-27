@@ -10,3 +10,7 @@ export class AnswerPresenter {
     }
   }
 }
+
+/**
+ * Todo presenter é um mapper - só transformar um formato para outro
+ */
