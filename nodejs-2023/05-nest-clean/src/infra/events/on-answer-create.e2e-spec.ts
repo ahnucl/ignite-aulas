@@ -50,18 +50,15 @@ describe('On answer created (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New answer',
+        attachments: [],
       })
 
     await waitFor(async () => {
-      console.log(user.id.toString())
-
       const notificationOnDatabase = await prisma.notification.findFirst({
         where: {
           recipientId: user.id.toString(),
         },
       })
-
-      console.log('notificationOnDatabase', notificationOnDatabase)
 
       expect(notificationOnDatabase).not.toBeNull()
     })
